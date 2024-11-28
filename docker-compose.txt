@@ -1,0 +1,43 @@
+services:
+  db01:
+    container_name: db01
+    image: khaledreda/sql_db:v1.0
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin123
+
+  mc01:
+    container_name: mc01
+    image: memcached
+    ports:
+      - "11211:11211"
+
+  rmq01:
+    container_name: rmq01
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=test
+      - RABBITMQ_DEFAULT_PASS=test
+
+  app01:
+    container_name: app01
+    image: khaledreda/tomcat_app:v1.0
+    ports:
+      - "8080:8080"
+    volumes:
+      - appdata:/usr/local/tomcat/webapps
+
+  lb01:
+    container_name: lb01
+    image: khaledreda/nginx_lb:v1.0
+    ports:
+      - "80:80"
+
+volumes:
+  dbdata:
+  appdata:
